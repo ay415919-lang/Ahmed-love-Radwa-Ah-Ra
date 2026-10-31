@@ -1,0 +1,609 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>رضوى ❤️ حبيبة قلبي</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Cairo:wght@400;600;700;900&family=Aref+Ruqaa:wght@700&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --pink: #ff6fa5;
+    --deep-pink: #ff2e77;
+    --gold: #ffd76b;
+    --glass-bg: rgba(255,255,255,0.12);
+    --glass-border: rgba(255,255,255,0.35);
+  }
+
+  *{margin:0;padding:0;box-sizing:border-box;}
+
+  html,body{
+    height:100%;
+    font-family:'Cairo', sans-serif;
+    overflow-x:hidden;
+    background:#1a0f1f;
+    color:#fff;
+  }
+
+  /* ===== خلفية متغيرة ===== */
+  #bg-slider{
+    position:fixed;
+    inset:0;
+    z-index:-3;
+    overflow:hidden;
+  }
+  #bg-slider .bg-slide{
+    position:absolute;
+    inset:0;
+    background-size:cover;
+    background-position:center;
+    opacity:0;
+    transform:scale(1.08);
+    transition:opacity 2.5s ease, transform 8s ease;
+  }
+  #bg-slider .bg-slide.active{
+    opacity:1;
+    transform:scale(1);
+  }
+  #bg-fallback-gradient{
+    position:fixed;
+    inset:0;
+    z-index:-4;
+    background:linear-gradient(135deg,#3a0d3f,#7a1e4b,#c2185b,#4a0e2e);
+    background-size:400% 400%;
+    animation:gradientShift 18s ease infinite;
+  }
+  @keyframes gradientShift{
+    0%{background-position:0% 50%;}
+    50%{background-position:100% 50%;}
+    100%{background-position:0% 50%;}
+  }
+  #overlay{
+    position:fixed;
+    inset:0;
+    z-index:-2;
+    background:linear-gradient(180deg, rgba(20,5,25,0.55) 0%, rgba(20,5,25,0.75) 60%, rgba(10,2,15,0.9) 100%);
+  }
+
+  /* ===== الهيدر / العنوان ===== */
+  .hero{
+    min-height:50vh;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    text-align:center;
+    padding:40px 20px 20px;
+  }
+  .hero h1{
+    font-family:'Aref Ruqaa', serif;
+    font-size:clamp(2.5rem, 8vw, 5.5rem);
+    color:#fff;
+    text-shadow:0 0 25px rgba(255,111,165,0.9), 0 0 60px rgba(255,46,119,0.5);
+    animation:pulseGlow 3s ease-in-out infinite;
+  }
+  @keyframes pulseGlow{
+    0%,100%{text-shadow:0 0 25px rgba(255,111,165,0.9), 0 0 60px rgba(255,46,119,0.5);}
+    50%{text-shadow:0 0 40px rgba(255,215,107,0.9), 0 0 90px rgba(255,46,119,0.8);}
+  }
+  .hero p{
+    margin-top:14px;
+    font-size:clamp(1rem, 3vw, 1.4rem);
+    color:#ffd6e6;
+    font-weight:600;
+  }
+  .heart-icon{
+    font-size:3rem;
+    margin-top:10px;
+    animation:beat 1.2s ease-in-out infinite;
+    filter:drop-shadow(0 0 15px var(--deep-pink));
+  }
+  @keyframes beat{
+    0%,100%{transform:scale(1);}
+    25%{transform:scale(1.2);}
+    40%{transform:scale(0.95);}
+  }
+
+  /* ===== كروت الكلام العائمة ===== */
+  #quote-overlay{
+    position:fixed;
+    inset:0;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    pointer-events:none;
+    z-index:50;
+    padding:20px;
+  }
+  .quote-card{
+    max-width:520px;
+    background:var(--glass-bg);
+    backdrop-filter:blur(16px);
+    -webkit-backdrop-filter:blur(16px);
+    border:1px solid var(--glass-border);
+    border-radius:24px;
+    padding:32px 36px;
+    text-align:center;
+    font-size:clamp(1.1rem, 3vw, 1.6rem);
+    font-weight:700;
+    color:#fff;
+    box-shadow:0 8px 40px rgba(255,46,119,0.4);
+    opacity:0;
+    transform:scale(0.7);
+    transition:opacity 0.8s ease, transform 0.8s cubic-bezier(.34,1.56,.64,1);
+  }
+  .quote-card.show{
+    opacity:1;
+    transform:scale(1);
+  }
+
+  /* ===== قسم الصور ===== */
+  .gallery-section {
+    padding: 40px 20px;
+    max-width: 1000px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .gallery-section h2 {
+    color: var(--gold);
+    margin-bottom: 30px;
+    font-size: 2rem;
+    text-shadow: 0 0 10px rgba(255,215,107,0.5);
+  }
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 20px;
+    padding: 10px;
+  }
+  .gallery-item {
+    position: relative;
+    border-radius: 20px;
+    overflow: hidden;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    border: 3px solid rgba(255,255,255,0.2);
+    transition: transform 0.4s ease, box-shadow 0.4s ease;
+    background: var(--glass-bg);
+    backdrop-filter: blur(10px);
+  }
+  .gallery-item:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 15px 40px rgba(255,46,119,0.6);
+    border-color: var(--pink);
+  }
+  .gallery-item img {
+    width: 100%;
+    height: 250px;
+    object-fit: cover;
+    display: block;
+    transition: transform 0.4s ease;
+  }
+  .gallery-item:hover img {
+    transform: scale(1.05);
+  }
+
+  /* ===== مشغل الأغاني ===== */
+  .player-section{
+    display:flex;
+    justify-content:center;
+    padding:20px 20px;
+  }
+  .player{
+    width:100%;
+    max-width:420px;
+    background:var(--glass-bg);
+    backdrop-filter:blur(20px);
+    -webkit-backdrop-filter:blur(20px);
+    border:1px solid var(--glass-border);
+    border-radius:28px;
+    padding:26px;
+    text-align:center;
+    box-shadow:0 10px 50px rgba(0,0,0,0.4);
+  }
+  .player h3{
+    font-size:1.3rem;
+    margin-bottom:6px;
+    color:var(--gold);
+  }
+  .player .track-name{
+    font-size:1rem;
+    color:#ffe0ec;
+    margin-bottom:18px;
+    min-height:24px;
+  }
+  .disc{
+    width:120px;height:120px;
+    margin:0 auto 20px;
+    border-radius:50%;
+    background:radial-gradient(circle at center, var(--deep-pink) 0%, #4a0e2e 70%);
+    border:4px solid rgba(255,255,255,0.3);
+    display:flex;align-items:center;justify-content:center;
+    font-size:2.2rem;
+    animation:spin 6s linear infinite paused;
+  }
+  .disc.playing{animation-play-state:running;}
+  @keyframes spin{from{transform:rotate(0deg);}to{transform:rotate(360deg);}}
+  .player-controls{
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    gap:18px;
+    margin-bottom:16px;
+  }
+  .player-controls button{
+    background:linear-gradient(135deg, var(--pink), var(--deep-pink));
+    border:none;
+    color:#fff;
+    width:52px;height:52px;
+    border-radius:50%;
+    font-size:1.3rem;
+    cursor:pointer;
+    box-shadow:0 4px 18px rgba(255,46,119,0.6);
+    transition:transform 0.2s ease;
+  }
+  .player-controls button:hover{transform:scale(1.1);}
+  .player-controls button.small{width:42px;height:42px;font-size:1rem;background:rgba(255,255,255,0.2);}
+  .volume-row{display:flex;align-items:center;gap:10px;justify-content:center;}
+  .volume-row input[type=range]{width:140px;accent-color:var(--deep-pink);}
+
+  /* ===== أقسام الكروت الزجاجية (الكلام والهدية والعداد) ===== */
+  .glass-section {
+    padding: 20px 20px;
+    max-width: 800px;
+    margin: 0 auto;
+    text-align: center;
+  }
+  .glass-box {
+    background: var(--glass-bg);
+    backdrop-filter: blur(16px);
+    border: 1px solid var(--glass-border);
+    border-radius: 24px;
+    padding: 30px;
+    box-shadow: 0 8px 32px rgba(0,0,0,0.3);
+    margin-bottom: 20px;
+  }
+  .glass-box h2 {
+    color: var(--gold);
+    margin-bottom: 20px;
+    font-size: 1.8rem;
+  }
+  .glass-box p {
+    font-size: 1.1rem;
+    line-height: 1.8;
+    color: #ffe0ec;
+    margin-bottom: 15px;
+    font-weight: 600;
+  }
+
+  /* ===== عداد الحب وعداد عيد الحب ===== */
+  .counter-grid{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:12px;
+  }
+  .counter-grid div{
+    background:rgba(255,255,255,0.08);
+    border-radius:14px;
+    padding:14px 6px;
+  }
+  .counter-grid .num{
+    font-size:1.6rem;
+    font-weight:900;
+    color:#fff;
+    display:block;
+  }
+  .counter-grid .lbl{
+    font-size:0.8rem;
+    color:#ffd6e6;
+  }
+
+  /* ===== قسم الأزرار التفاعلية ===== */
+  .interactive-section{
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    gap:26px;
+    padding:20px 20px 60px;
+    text-align:center;
+  }
+  .laugh-btn{
+    background:linear-gradient(135deg, var(--gold), var(--pink));
+    border:none;
+    color:#3a0d1f;
+    font-family:'Cairo', sans-serif;
+    font-weight:900;
+    font-size:1.2rem;
+    padding:18px 44px;
+    border-radius:50px;
+    cursor:pointer;
+    box-shadow:0 8px 30px rgba(255,111,165,0.6);
+    transition:transform 0.25s ease, box-shadow 0.25s ease;
+  }
+  .laugh-btn:hover{
+    transform:translateY(-4px) scale(1.05);
+    box-shadow:0 14px 40px rgba(255,111,165,0.8);
+  }
+
+  /* ===== الفوتر ===== */
+  footer{
+    text-align:center;
+    padding:26px 16px 34px;
+    font-size:1rem;
+    color:#fff;
+    border-top:1px solid rgba(255,255,255,0.1);
+    font-weight: 700;
+    background: rgba(0,0,0,0.3);
+  }
+  footer span {
+    color: var(--gold);
+    text-shadow:0 0 10px rgba(255, 215, 107, 0.5);
+  }
+
+  /* ===== القلوب والورود المتساقطة ===== */
+  .falling-item{
+    position:fixed;
+    top:-60px;
+    font-size:1.8rem;
+    pointer-events:none;
+    z-index:100;
+    animation-name:fall;
+    animation-timing-function:linear;
+    animation-fill-mode:forwards;
+  }
+  @keyframes fall{
+    0%{transform:translateY(0) rotate(0deg); opacity:1;}
+    100%{transform:translateY(110vh) rotate(360deg); opacity:0.2;}
+  }
+
+  @media(max-width:480px){
+    .counter-grid{grid-template-columns:repeat(2,1fr);}
+    .gallery-grid{grid-template-columns:repeat(2, 1fr);}
+    .gallery-item img { height: 150px; }
+  }
+</style>
+</head>
+<body>
+
+<div id="bg-fallback-gradient"></div>
+<div id="bg-slider"></div>
+<div id="overlay"></div>
+
+<div id="quote-overlay">
+  <div class="quote-card" id="quoteCard"></div>
+</div>
+
+<section class="hero">
+  <h1>رضوى</h1>
+  <p>أحلى حاجة حصلت في حياة أحمد ❤️</p>
+  <div class="heart-icon">💖</div>
+</section>
+
+<!-- قسم الصور -->
+<section class="gallery-section">
+  <h2>ذكرياتنا الحلوة 📸</h2>
+  <div class="gallery-grid" id="myGallery"></div>
+</section>
+
+<!-- مشغل الأغاني -->
+<section class="player-section">
+  <div class="player">
+    <h3>موسيقى قلبي 🎶</h3>
+    <div class="track-name" id="trackName">جاري التحميل...</div>
+    <div class="disc" id="disc">🎵</div>
+    <div class="player-controls">
+      <button class="small" id="prevBtn" title="السابق">⏮</button>
+      <button id="playBtn" title="تشغيل / إيقاف">▶</button>
+      <button class="small" id="nextBtn" title="التالي">⏭</button>
+    </div>
+    <div class="volume-row">
+      <span>🔊</span>
+      <input type="range" id="volumeSlider" min="0" max="1" step="0.01" value="0.6">
+    </div>
+    <audio id="audioPlayer" loop></audio>
+  </div>
+</section>
+
+<!-- قسم الكلام الحلو (القديم) -->
+<section class="glass-section">
+  <div class="glass-box">
+    <h2>كلام من قلبي ليكِ 💌</h2>
+    <p>يا رضوى، إنتِ مش بس حبيبتي، إنتِ البيت اللي بحس فيه بالأمان، والضحكة اللي بتنسيني هموم الدنيا كلها.</p>
+    <p>وجودك في حياتي غيّر معنى الأيام، بقيت أحب الصبح عشان بشوفك، وأحب الليل عشان بحلم بيكِ.</p>
+    <p>إنتِ أحلى صدفة حصلتلي، وأجمل قدر كتبه ربنا ليا، وكل يوم بشكر الله إنه عرفني بيكِ.</p>
+    <p>لو الدنيا كلها خيرتني بين حاجة وحاجة، هختارك إنتِ في كل مرة، لأنك ببساطة كل حاجة.</p>
+    <p>بحبك مش بس بالكلام، بحبك في كل تفصيلة صغيرة، في ضحكتك، في زعلك، في كل حاجة بتعمليها.</p>
+    <p>إنتِ السبب إن أيامي بقت ليها طعم ولون، وقلبي اللي كان مقفول، إنتِ المفتاح الوحيد ليه.</p>
+    <p>أوعدك أكون سندك في كل خطوة، وأخليكي أسعد حد في الدنيا، لأنك تستاهلي كل خير يا أغلى حاجة في حياتي.</p>
+    <p>أنا مش بحبك عشان إنتِ كويسة، أنا بحبك عشان إنتِ إنتِ، وده أكتر حاجة بتخليني مبسوط.</p>
+  </div>
+</section>
+
+<!-- قسم الهدية الجديد -->
+<section class="glass-section">
+  <div class="glass-box">
+    <h2>مفاجأة ليكِ 🎁</h2>
+    <p style="font-size: 1.3rem; color: var(--pink); font-weight: 900;">مستنيكي هدية لما أشوفك..</p>
+    <p>حاجة جميلة قوي هتعجبك، والهدية دي بسيطة من موقع عشان أقولك إني بحبك قد الدنيا. ❤️</p>
+  </div>
+</section>
+
+<!-- قسم عداد عيد الحب الجديد -->
+<section class="glass-section">
+  <div class="glass-box">
+    <h2>باقي على عيد الحب 💝</h2>
+    <div class="counter-grid" id="valentineCountdown">
+      <div><span class="num" id="vDays">0</span><span class="lbl">يوم</span></div>
+      <div><span class="num" id="vHours">0</span><span class="lbl">ساعة</span></div>
+      <div><span class="num" id="vMins">0</span><span class="lbl">دقيقة</span></div>
+      <div><span class="num" id="vSecs">0</span><span class="lbl">ثانية</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- قسم الأزرار التفاعلية (ضحكة رضوى + عداد الحب القديم) -->
+<section class="interactive-section">
+  <button class="laugh-btn" id="laughBtn">✨ ضحكة رضوى ✨</button>
+
+  <div class="glass-box" style="width: 100%; max-width: 520px;">
+    <h2>💞 عداد الحب منذ أن أصبحتِ حياتي 💞</h2>
+    <div class="counter-grid">
+      <div><span class="num" id="cDays">0</span><span class="lbl">يوم</span></div>
+      <div><span class="num" id="cHours">0</span><span class="lbl">ساعة</span></div>
+      <div><span class="num" id="cMins">0</span><span class="lbl">دقيقة</span></div>
+      <div><span class="num" id="cSecs">0</span><span class="lbl">ثانية</span></div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  المبرمج: <span>أحمد</span> ❤️
+</footer>
+
+<script>
+/* ========================================================= */
+/* روابط الصور والأغاني */
+const YOUR_IMAGES_LINKS = [
+  "https://i.postimg.cc/qqV7x9Zg/IMG-20261031-WA0066.jpg",
+  "https://i.postimg.cc/1RwX33fK/IMG-20261004-WA0035(1).jpg",
+  "https://i.postimg.cc/Wzkk2Gx6/IMG-20261004-WA0034(1).jpg",
+  "https://i.postimg.cc/8Pv37svR/IMG-20261004-WA0033(1).jpg"
+];
+
+const YOUR_SONGS_LINKS = [
+  { file: "https://files.catbox.moe/p7xce4.mp3", name: "رامي صبري" },
+  { file: "https://files.catbox.moe/m8ctee.mp3", name: "أغنية 2" }
+];
+
+/* ===================== كود الصور ===================== */
+const galleryContainer = document.getElementById("myGallery");
+YOUR_IMAGES_LINKS.forEach((link) => {
+  const div = document.createElement("div");
+  div.className = "gallery-item";
+  const img = document.createElement("img");
+  img.src = link;
+  div.appendChild(img);
+  galleryContainer.appendChild(div);
+});
+
+/* ===================== مشغل الأغاني ===================== */
+const audio = document.getElementById("audioPlayer");
+const playBtn = document.getElementById("playBtn");
+const trackName = document.getElementById("trackName");
+const disc = document.getElementById("disc");
+let songIndex = 0;
+let isPlaying = false;
+
+function loadSong(i) {
+  songIndex = (i + YOUR_SONGS_LINKS.length) % YOUR_SONGS_LINKS.length;
+  audio.src = YOUR_SONGS_LINKS[songIndex].file;
+  trackName.textContent = YOUR_SONGS_LINKS[songIndex].name;
+}
+loadSong(0);
+
+playBtn.addEventListener("click", () => {
+  if(isPlaying) {
+    audio.pause(); playBtn.textContent = "▶"; disc.classList.remove("playing"); isPlaying = false;
+  } else {
+    audio.play().then(() => { playBtn.textContent = "⏸"; disc.classList.add("playing"); isPlaying = true; }).catch(e => alert("دوس تاني عشان يشتغل"));
+  }
+});
+document.getElementById("nextBtn").addEventListener("click", () => { loadSong(songIndex + 1); if(isPlaying) audio.play(); });
+document.getElementById("prevBtn").addEventListener("click", () => { loadSong(songIndex - 1); if(isPlaying) audio.play(); });
+document.getElementById("volumeSlider").addEventListener("input", (e) => audio.volume = e.target.value);
+
+/* ===================== عداد الحب القديم ===================== */
+const LOVE_START_DATE = new Date("2023-01-01T00:00:00");
+function updateLoveCounter(){
+  const now = new Date();
+  let diff = Math.floor((now - LOVE_START_DATE) / 1000);
+  if(diff < 0) diff = 0;
+  document.getElementById("cDays").textContent = Math.floor(diff / 86400);
+  document.getElementById("cHours").textContent = Math.floor((diff % 86400) / 3600);
+  document.getElementById("cMins").textContent = Math.floor((diff % 3600) / 60);
+  document.getElementById("cSecs").textContent = diff % 60;
+}
+updateLoveCounter();
+setInterval(updateLoveCounter, 1000);
+
+/* ===================== عداد عيد الحب الجديد ===================== */
+// تاريخ عيد الحب (تقدر تغير السنة أو التاريخ من هنا لو حبيت)
+const VALENTINE_DATE = new Date("2027-02-14T00:00:00").getTime();
+
+function updateValentineCounter() {
+  const now = new Date().getTime();
+  const distance = VALENTINE_DATE - now;
+  
+  if (distance < 0) {
+    document.getElementById("valentineCountdown").innerHTML = "<h3>كل سنة وإنتِ طيبة يا رضوى ❤️</h3>";
+    return;
+  }
+  
+  const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+  
+  document.getElementById("vDays").textContent = days;
+  document.getElementById("vHours").textContent = hours;
+  document.getElementById("vMins").textContent = minutes;
+  document.getElementById("vSecs").textContent = seconds;
+}
+setInterval(updateValentineCounter, 1000);
+updateValentineCounter();
+
+/* ===================== الكلام العائم ===================== */
+const LOVE_QUOTES = [
+  "يا رضوى.. إنتِ الحظ الحلو اللي دخل حياتي فجأة وغيّرها للأحلى ❤️",
+  "أنتِ حبيبتي الأولى والأخيرة، وقلبي مكتوب عليه اسمك من زمان 💕",
+  "ضحكتك بتنوّر دنيتي كلها يا أحلى رضوى ✨",
+  "معاكِ قلبي هادي، وبحبك أكتر من أي حاجة في الدنيا 🌸"
+];
+const quoteCard = document.getElementById("quoteCard");
+let quoteIndex = -1;
+function showRandomQuote(){
+  let next = Math.floor(Math.random() * LOVE_QUOTES.length);
+  if(next === quoteIndex && LOVE_QUOTES.length > 1) next = (next + 1) % LOVE_QUOTES.length;
+  quoteIndex = next;
+  quoteCard.textContent = LOVE_QUOTES[quoteIndex];
+  quoteCard.classList.add("show");
+  setTimeout(() => quoteCard.classList.remove("show"), 4000);
+}
+setTimeout(showRandomQuote, 1200);
+setInterval(showRandomQuote, 7000);
+
+/* ===================== الخلفية ===================== */
+const BACKGROUND_IMAGES = [
+  "https://images.unsplash.com/photo-1518199266791-5375a83190b7?auto=format&fit=crop&w=1600&q=80",
+  "https://images.unsplash.com/photo-1516589178581-6cd7833ae3b2?auto=format&fit=crop&w=1600&q=80"
+];
+const sliderEl = document.getElementById("bg-slider");
+let bgSlides = [];
+BACKGROUND_IMAGES.forEach((url) => {
+  const div = document.createElement("div"); div.className = "bg-slide"; div.style.backgroundImage = `url("${url}")`;
+  sliderEl.appendChild(div); bgSlides.push(div);
+});
+let currentBg = 0;
+function showBg(index){ bgSlides.forEach(s => s.classList.remove("active")); bgSlides[index].classList.add("active"); }
+if(bgSlides.length){ showBg(0); setInterval(() => { currentBg = (currentBg + 1) % bgSlides.length; showBg(currentBg); }, 5000); }
+
+/* ===================== زر الضحكة ===================== */
+const laughBtn = document.getElementById("laughBtn");
+const fallingEmojis = ["❤️","💖","🌹","💕","✨","💐","💗"];
+function spawnFallingItem(){
+  const item = document.createElement("div");
+  item.className = "falling-item";
+  item.textContent = fallingEmojis[Math.floor(Math.random() * fallingEmojis.length)];
+  item.style.left = Math.random() * 100 + "vw";
+  const duration = 3 + Math.random() * 2.5;
+  item.style.animationDuration = duration + "s";
+  item.style.fontSize = (1.2 + Math.random() * 1.6) + "rem";
+  document.body.appendChild(item);
+  setTimeout(() => item.remove(), duration * 1000 + 200);
+}
+laughBtn.addEventListener("click", () => {
+  for(let i = 0; i < 45; i++) setTimeout(spawnFallingItem, i * 40);
+});
+</script>
+
+</body>
+  </html>
